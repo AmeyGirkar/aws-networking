@@ -1,5 +1,6 @@
 # AWS Networking Infrastructure with Terraform
 
+$\
 
 This repository contains Terraform code to provision a multi-tier AWS network environment as illustrated in the architecture diagram.
 
