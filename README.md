@@ -1,8 +1,42 @@
 # AWS Networking Infrastructure with Terraform
 
+![Architecture Diagram](diagram.png)
 
+## Architecture Diagram (Mermaid)
 
-This repository contains Terraform code to provision a multi-tier AWS network environment as illustrated in the architecture diagram.
+```mermaid
+graph TD
+    subgraph VPC ["VPC: 10.0.0.0/16"]
+        direction TB
+        IGW["Internet Gateway"]
+        
+        subgraph PublicSubnet1 ["Public Subnet 1 (10.0.1.0/24)"]
+            ALB["Application Load Balancer"]
+            NAT["NAT Gateway"]
+        end
+
+        subgraph PublicSubnet2 ["Public Subnet 2 (10.0.2.0/24)"]
+            TG["Target Group"]
+        end
+
+        subgraph PrivateSubnet ["Private Subnet (10.0.3.0/24)"]
+            EC2["EC2 Instance (Apache)"]
+        end
+    end
+
+    Users((Users)) -->|HTTP:80| IGW
+    IGW --> ALB
+    ALB --> TG
+    TG --> EC2
+    EC2 -->|Outbound| NAT
+    NAT --> IGW
+
+    style VPC fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style PublicSubnet1 fill:#e1f5fe,stroke:#01579b
+    style PublicSubnet2 fill:#e1f5fe,stroke:#01579b
+    style PrivateSubnet fill:#fff3e0,stroke:#e65100
+```
+
 
 ## Architecture Overview
 The infrastructure includes:
